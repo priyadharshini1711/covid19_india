@@ -1,6 +1,6 @@
 # Covid19 India
 > A simple web app to track Covid 19 status in India
-> Live demo [_here_](https://www.example.com). 
+> Live demo [_here_](https://priyadharshinicovid19india.netlify.app/). 
 
 ## Table of Contents
 * [General Info](#general-information)
