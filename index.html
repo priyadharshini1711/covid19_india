@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>COVID 19 India</title>
+    <style>
+        .input-field {
+            text-align: center;
+        }
+        
+        #myInput {
+            background-image: url('/searchicon.png');
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            width: 75%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+        
+        body {
+            background-image: url('corona5.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="text-align: center;">COVID 19 India</h1>
+    <div class="input-field">
+        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+    </div>
+    <div class="container" style="text-align:center;">
+        <table class="highchart" data-graph-container-before="1" data-graph-type="column" id="myTable">
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Active</th>
+                    <th>Confirmed</th>
+                    <th>Death</th>
+                </tr>
+            </thead>
+            <tbody id="data">
+
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        fetch("https://api.covid19india.org/data.json").then(
+            res => {
+                res.json().then(
+                    data => {
+                        console.log(data.statewise);
+                        if (data.statewise.length > 0) {
+                            var temp = "";
+
+                            //loop
+                            data.statewise.forEach(element => {
+                                temp += "<tr>";
+                                temp += "<td>" + element.state + "</td>";
+                                temp += "<td>" + element.active + "</td>";
+                                temp += "<td>" + element.confirmed + "</td>";
+                                temp += "<td>" + element.deaths + "</td>";
+                                temp += "</tr>";
+                                //console.log(element);
+                            });
+
+                            document.getElementById("data").innerHTML = temp;
+                        }
+                    }
+                )
+            }
+        )
+    </script>
+</body>
+
+</html>
